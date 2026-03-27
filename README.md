@@ -54,5 +54,108 @@ recon-assistant/
 ├── dir_bruteforce.py
 ├── http_decapitator.py
 │
-├
+├── wordlists/
+├── results/
+│
+├── README.md
+└── venv/
 ```
+
+---
+
+## ⚙️ Setup
+
+### 1. Clone the repository
+
+```
+git clone <your-repo-url>
+cd recon-assistant
+```
+
+### 2. Create and activate virtual environment
+
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```
+pip install requests
+```
+
+---
+
+## ▶️ Usage
+
+### Subdomain Scanner
+
+```
+python recon.py
+```
+
+---
+
+### Port Scanner
+
+```
+python port_scanner.py
+```
+
+---
+
+### Directory Brute Forcer
+
+```
+python dir_bruteforce.py
+```
+
+---
+
+## 📄 Wordlists
+
+Wordlists should be placed in the `wordlists/` directory.
+
+Recommended:
+
+* SecLists (common industry wordlists)
+
+---
+
+## 📊 Results
+
+Scan results can be stored in the `results/` directory for later analysis.
+
+---
+
+## 🧠 Purpose
+
+This project is part of my hands-on learning in:
+
+* Bug bounty methodology
+* Reconnaissance techniques
+* Python scripting for security
+
+---
+
+## 🚀 Future Improvements
+
+* [ ] Add multithreading for faster scans
+* [ ] Integrate larger wordlists
+* [ ] Save and organize results automatically
+* [ ] Add CLI arguments (e.g. `-d`, `-w`)
+* [ ] Improve error handling and logging
+
+---
+
+## ⚠️ Disclaimer
+
+This project is for educational purposes only.
+Only use these tools on systems you own or have permission to test.
+
+---
+
+## 📬 Notes
+
+Still early in the learning process, but this project represents a hands-on approach to understanding how recon tools work internally.
