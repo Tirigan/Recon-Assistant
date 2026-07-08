@@ -2,7 +2,14 @@ import requests
 
 url = input("Enter URL: ")
 
-response = requests.get(url)
+try:
+    response = requests.get(url, timeout=5)
 
-for key, value in response.headers.items():
-    print(f"{key}: {value}")
+    print(f"\nStatus Code: {response.status_code}")
+    print("\nHeaders:")
+
+    for key, value in response.headers.items():
+        print(f"{key}: {value}")
+
+except requests.exceptions.RequestException as e:
+    print(f"Error: {e}")
