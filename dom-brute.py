@@ -1,23 +1,53 @@
 import requests
 
-domain = input("Enter Domain: ")
+domain = input("Enter Domain: ").strip()
 
-subs = ["www", "mail", "dev", "test", "api", "staging"]
+subs = [
+    "www",
+    "mail",
+    "dev",
+    "test",
+    "api",
+    "staging",
+    "admin",
+    "portal",
+    "vpn",
+    "blog"
+]
 
 print(f"\n[+] Scanning {domain}...\n")
 
-for sub in subs:
-    https_url = f"https://{sub}.{domain}"
-    http_url = f"http://{sub}.{domain}"
+found = []
 
-    try:
-        response = requests.get(https_url, timeout=3)
-        if response.status_code < 400:
-            print(f"[+] Found: {https_url} ({response.status_code})")
-    except:
+for sub in subs:
+    subdomain = f"{sub}.{domain}"
+
+    for protocol in ["https", "http"]:
+        url = f"{protocol}://{subdomain}"
+
         try:
-            response = requests.get(http_url, timeout=3)
+            response = requests.get(
+                url,
+                timeout=3,
+                allow_redirects=False
+            )
+
             if response.status_code < 400:
-                print(f"[+] Found: {http_url} ({response.status_code})")
-        except:
-            pass
+                print(f"[+] Found: {url} ({response.status_code})")
+                found.append(url)
+                break
+
+        except requests.exceptions.SSLError:
+            continue
+
+        except requests.exceptions.ConnectionError:
+            continue
+
+        except requests.exceptions.Timeout:
+            print(f"[!] Timeout: {url}")
+
+        except requests.exceptions.RequestException as e:
+            print(f"[!] Error: {e}")
+
+
+print(f"\n[+] Scan complete. Found {len(found)} subdomains.")
