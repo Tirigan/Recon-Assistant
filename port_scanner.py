@@ -1,17 +1,47 @@
 import socket
 
-target = input("Enter IP or domain: ")
+target = input("Enter IP or domain: ").strip()
 
-ports = [21, 22, 25, 53, 80, 110, 139, 143, 443, 445, 8080]
+ports = {
+    21: "FTP",
+    22: "SSH",
+    25: "SMTP",
+    53: "DNS",
+    80: "HTTP",
+    110: "POP3",
+    139: "NetBIOS",
+    143: "IMAP",
+    443: "HTTPS",
+    445: "SMB",
+    8080: "HTTP-Proxy"
+}
 
-for port in ports:
-    s = socket.socket()
-    s.settimeout(1)
-    
+print(f"\n[+] Scanning {target}...\n")
+
+try:
+    ip = socket.gethostbyname(target)
+    print(f"[+] Resolved {target} -> {ip}\n")
+
+except socket.gaierror:
+    print("[-] Could not resolve hostname.")
+    exit()
+
+
+for port, service in ports.items():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(1)
+
     try:
-        s.connect((target, port))
-        print(f"[+] Port {port} is open")
-    except:
-        pass
-    
-    s.close()
+        result = sock.connect_ex((ip, port))
+
+        if result == 0:
+            print(f"[+] Port {port} OPEN ({service})")
+
+    except socket.error as e:
+        print(f"[!] Error scanning port {port}: {e}")
+
+    finally:
+        sock.close()
+
+
+print("\n[+] Scan complete.")
